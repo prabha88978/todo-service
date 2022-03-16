@@ -1,6 +1,7 @@
 package com.paymatrix.todo.model;
 
 import com.paymatrix.todo.controller.dto.ToDoDto;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +20,7 @@ public class ToDo {
     private Long id;
     private String text;
     private Date date;
-    private boolean completed;
+    private Boolean completed;
 
     public ToDo(String text, Date date, boolean completed) {
         this.text = text;
@@ -30,4 +31,5 @@ public class ToDo {
     public static ToDo from(ToDoDto toDoDto) {
         return new ToDo(toDoDto.getText(), toDoDto.getDate(), false);
     }
+
 }

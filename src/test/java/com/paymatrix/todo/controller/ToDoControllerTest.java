@@ -1,6 +1,7 @@
 package com.paymatrix.todo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paymatrix.todo.controller.dto.ToDoDto;
 import com.paymatrix.todo.model.ToDo;
 import com.paymatrix.todo.service.ToDoService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,7 @@ import java.util.TimeZone;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,7 +74,7 @@ class ToDoControllerTest {
         when(toDoService.getToDos()).thenReturn(expectedToDos);
 
         MvcResult result = mockMvc.perform(get("/todos")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
@@ -89,12 +89,29 @@ class ToDoControllerTest {
         when(toDoService.getToDoBy(anyLong())).thenReturn(java.util.Optional.of(expectedToDo));
 
         MvcResult result = mockMvc.perform(get("/todos/1")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
 
         assertEquals(objectMapper.writeValueAsString(expectedToDo), response);
         verify(toDoService, times(1)).getToDoBy(anyLong());
+    }
+
+    @Test
+    void shouldUpdateToDoById() throws Exception {
+        ToDoDto toDoDto = new ToDoDto("Programming", new Date(), true);
+        ToDo updatedToDo = new ToDo("Programming", new Date(), true);
+        updatedToDo.setId(1L);
+        when(toDoService.updateToDoBy(anyLong(), any(ToDoDto.class))).thenReturn(updatedToDo);
+
+        MvcResult result = mockMvc.perform(put("/todos/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(toDoDto)))
+                    .andReturn();
+        String response = result.getResponse().getContentAsString();
+
+        assertEquals(objectMapper.writeValueAsString(updatedToDo), response);
+        verify(toDoService, times(1)).updateToDoBy(eq(1L), any(ToDoDto.class));
     }
 }

@@ -18,21 +18,27 @@ public class ToDoController {
     private final ToDoService toDoService;
 
     @PostMapping("/todos")
-    public ResponseEntity<Object> save(@RequestBody ToDoDto toDoDto){
-        ToDo toDo =  ToDo.from(toDoDto);
-        ToDo response =  toDoService.save(toDo);
+    public ResponseEntity<Object> save(@RequestBody ToDoDto toDoDto) {
+        ToDo toDo = ToDo.from(toDoDto);
+        ToDo response = toDoService.save(toDo);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/todos")
-    public ResponseEntity<List<ToDo>> getToDos(){
+    public ResponseEntity<List<ToDo>> getToDos() {
         List<ToDo> toDos = toDoService.getToDos();
         return ResponseEntity.status(HttpStatus.OK).body(toDos);
     }
 
     @GetMapping("/todos/{id}")
-    public ResponseEntity<Optional<ToDo>> getToDoBy(@PathVariable Long id){
+    public ResponseEntity<Optional<ToDo>> getToDoBy(@PathVariable Long id) {
         Optional<ToDo> toDo = toDoService.getToDoBy(id);
         return ResponseEntity.status(HttpStatus.OK).body(toDo);
+    }
+
+    @PutMapping("/todos/{id}")
+    public ResponseEntity<ToDo> updateBy(@PathVariable Long id, @RequestBody ToDoDto toDoDto) {
+        ToDo updatedToDo = toDoService.updateToDoBy(id, toDoDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedToDo);
     }
 }
