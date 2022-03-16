@@ -18,10 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -123,5 +120,16 @@ class ToDoControllerTest {
                 .andExpect(status().isOk());
 
         verify(toDoService, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void shouldReturn404WhenToDoIsNotPresent() throws Exception {
+        when(toDoService.getToDoBy(1L)).thenReturn(Optional.empty());
+
+        ResultActions result = mockMvc.perform(get("/todos/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(toDoService, times(1)).getToDoBy(1L);
     }
 }

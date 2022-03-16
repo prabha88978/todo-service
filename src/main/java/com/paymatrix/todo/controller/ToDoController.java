@@ -33,6 +33,8 @@ public class ToDoController {
     @GetMapping("/todos/{id}")
     public ResponseEntity<Optional<ToDo>> getToDoBy(@PathVariable Long id) {
         Optional<ToDo> toDo = toDoService.getToDoBy(id);
+        if (toDo.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.status(HttpStatus.OK).body(toDo);
     }
 

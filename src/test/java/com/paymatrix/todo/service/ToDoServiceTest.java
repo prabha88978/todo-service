@@ -7,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 
@@ -58,5 +60,13 @@ class ToDoServiceTest {
         toDoService.deleteById(1L);
 
         verify(toDoRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void shouldGive404WhenToDoIsNotThere() {
+        Optional<ToDo> response = toDoService.getToDoBy(1L);
+
+        assertTrue(response.isEmpty());
+        verify(toDoRepository,times(1)).findById(1L);
     }
 }
