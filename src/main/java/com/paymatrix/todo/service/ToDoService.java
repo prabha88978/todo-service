@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,5 +19,10 @@ public class ToDoService {
 
     public List<ToDo> getToDos() {
         return toDoRepository.findAll();
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public Optional<ToDo> getToDoBy(long id) {
+        return toDoRepository.findById(id);
     }
 }

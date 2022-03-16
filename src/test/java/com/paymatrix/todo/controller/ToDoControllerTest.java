@@ -82,4 +82,19 @@ class ToDoControllerTest {
         assertEquals(objectMapper.writeValueAsString(expectedToDos), response);
         verify(toDoService, times(1)).getToDos();
     }
+
+    @Test
+    void shouldReturnToDoById() throws Exception {
+        ToDo expectedToDo = new ToDo("Call Mother", new Date(), false);
+        when(toDoService.getToDoBy(anyLong())).thenReturn(java.util.Optional.of(expectedToDo));
+
+        MvcResult result = mockMvc.perform(get("/todos/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andReturn();
+        String response = result.getResponse().getContentAsString();
+
+        assertEquals(objectMapper.writeValueAsString(expectedToDo), response);
+        verify(toDoService, times(1)).getToDoBy(anyLong());
+    }
 }

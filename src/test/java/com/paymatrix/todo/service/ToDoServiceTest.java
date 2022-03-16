@@ -32,4 +32,10 @@ class ToDoServiceTest {
         verify(toDoRepository, times(1)).findAll();
     }
 
+    @Test
+    void shouldReturnToDoById() {
+        toDoService.getToDoBy(1L);
+
+        verify(toDoRepository, times(1)).findById(1L);
+    }
 }

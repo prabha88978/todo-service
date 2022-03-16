@@ -6,12 +6,10 @@ import com.paymatrix.todo.service.ToDoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,5 +28,11 @@ public class ToDoController {
     public ResponseEntity<List<ToDo>> getToDos(){
         List<ToDo> toDos = toDoService.getToDos();
         return ResponseEntity.status(HttpStatus.OK).body(toDos);
+    }
+
+    @GetMapping("/todos/{id}")
+    public ResponseEntity<Optional<ToDo>> getToDoBy(@PathVariable Long id){
+        Optional<ToDo> toDo = toDoService.getToDoBy(id);
+        return ResponseEntity.status(HttpStatus.OK).body(toDo);
     }
 }
