@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -108,10 +109,19 @@ class ToDoControllerTest {
         MvcResult result = mockMvc.perform(put("/todos/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(toDoDto)))
-                    .andReturn();
+                .andReturn();
         String response = result.getResponse().getContentAsString();
 
         assertEquals(objectMapper.writeValueAsString(updatedToDo), response);
         verify(toDoService, times(1)).updateToDoBy(eq(1L), any(ToDoDto.class));
+    }
+
+    @Test
+    void shouldDeleteToDoById() throws Exception {
+        ResultActions result = mockMvc.perform(delete("/todos/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(toDoService, times(1)).deleteById(1L);
     }
 }

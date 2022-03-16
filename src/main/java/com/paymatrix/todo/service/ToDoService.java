@@ -38,4 +38,8 @@ public class ToDoService {
         toDo.setCompleted(toDoDto.getCompleted());
         return toDoRepository.save(toDo);
     }
+
+    public void deleteById(long id) {
+        toDoRepository.deleteById(id);
+    }
 }

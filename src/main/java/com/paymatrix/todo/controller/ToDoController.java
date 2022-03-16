@@ -41,4 +41,10 @@ public class ToDoController {
         ToDo updatedToDo = toDoService.updateToDoBy(id, toDoDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedToDo);
     }
+
+    @DeleteMapping("/todos/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+        toDoService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

@@ -52,4 +52,11 @@ class ToDoServiceTest {
 
         verify(toDoRepository, times(1)).getById(1L);
     }
+
+    @Test
+    void shouldDeleteToDoById() {
+        toDoService.deleteById(1L);
+
+        verify(toDoRepository, times(1)).deleteById(1L);
+    }
 }
