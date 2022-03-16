@@ -24,4 +24,12 @@ class ToDoServiceTest {
 
         verify(toDoRepository, times(1)).save(any(ToDo.class));
     }
+
+    @Test
+    void shouldFetchAllToDos() {
+        toDoService.getToDos();
+
+        verify(toDoRepository, times(1)).findAll();
+    }
+
 }

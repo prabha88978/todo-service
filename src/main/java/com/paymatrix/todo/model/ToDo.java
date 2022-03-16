@@ -2,7 +2,7 @@ package com.paymatrix.todo.model;
 
 import com.paymatrix.todo.controller.dto.ToDoDto;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,15 +11,21 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 public class ToDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private final String text;
-    private final Date date;
-    private final boolean completed;
+    private String text;
+    private Date date;
+    private boolean completed;
+
+    public ToDo(String text, Date date, boolean completed) {
+        this.text = text;
+        this.date = date;
+        this.completed = completed;
+    }
 
     public static ToDo from(ToDoDto toDoDto) {
         return new ToDo(toDoDto.getText(), toDoDto.getDate(), false);
